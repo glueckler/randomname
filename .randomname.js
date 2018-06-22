@@ -54,7 +54,11 @@ if (flags.includes("--force")) {
   force = true;
 }
 if (flags.includes("--help")) {
-  console.log(`helpp`);
+  console.log(`helpp..`);
+  console.log(`--128 will create a folder with 128 files choosen at random`);
+  console.log(
+    `--force will rename all files (even those with .lock in their name`
+  );
   return;
 }
 
@@ -115,30 +119,38 @@ fs.readdir("./", (err, files) => {
 
     // -------------
 
-    console.log(`making random 128 `);
+    console.log(`\nmaking random 128..`);
     deleteDir("./magic128");
     fs.mkdirSync("./magic128");
 
     var filesInDir = fs.readdirSync("./");
     var dir128 = [];
+    // recursive function to return a file name and also remove it and never see it again
     const findFileNotDir = () => {
+      if (filesInDir.length === 0) return;
       var randomIndex = Math.trunc(Math.random() * filesInDir.length);
       var file = filesInDir[randomIndex];
       filesInDir.splice(randomIndex, 1);
-      if (fs.lstatSync(file).isDirectory()) return findFileNotDir();
+      if (fs.lstatSync(file).isDirectory() || file[0] === ".")
+        return findFileNotDir();
       else return file;
     };
+
+    // create an Array with 128 slots, turn them into files,
     Array(128)
       .join(" ")
       .split(" ")
       .map(() => {
         return findFileNotDir();
       })
+      .filter(file => !!file)
       .forEach(file => {
         fs.copyFile(file, `./magic128/${file}`, err => {
           if (err) throw err;
           console.log(`${file} was coppied to ./magic128/${file}`);
         });
       });
+    console.log(`\ndone making 128..`);
   }
+  console.log(`it worked!`)
 });
