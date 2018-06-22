@@ -7,7 +7,7 @@ var chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n
 var random = () => (chars[Math.trunc(Math.random() * 16)])
 
 fs.readdir('./', (err, files) => {
-  for (file of files) {
+  for (const file of files) {
     // continue if hidden file
     if (file[0] === '.') continue
     
