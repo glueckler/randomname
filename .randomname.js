@@ -140,9 +140,9 @@ fs.readdir("./", (err, files) => {
     Array(128)
       .join(" ")
       .split(" ")
-      .map(() => {
-        return findFileNotDir();
-      })
+      .map(findFileNotDir)
+      // should refactor..
+      // .map(findFileNotDir)
       .filter(file => !!file)
       .forEach(file => {
         fs.copyFile(file, `./magic128/${file}`, err => {
