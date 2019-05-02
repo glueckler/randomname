@@ -107,7 +107,7 @@ fs.readdir("./", (err, files) => {
           var curPath = path + "/" + file;
           if (fs.lstatSync(curPath).isDirectory()) {
             // recurse
-            deleteFolderRecursive(curPath);
+            deleteFolderRecursive(curPath); // this isn't right..
           } else {
             // delete file
             fs.unlinkSync(curPath);
